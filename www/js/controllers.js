@@ -53,11 +53,76 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MapaCtrl', function($scope) {
-  $scope.map = { center: { latitude: -30, longitude: -51 }, zoom: 8 };
+  //$scope.map = { center: { latitude: -30, longitude: -51 }, zoom: 8 };
+ $scope.myLocation = {
+    lng : '',
+    lat: ''
+  }
+ 
+  $scope.options = {
+    enableHighAccuracy: true,
+    timeout: 50000,
+    maximumAge: 0
+  };
+   
+  $scope.drawMap = function(position) {
+ 
+    //$scope.$apply is needed to trigger the digest cycle when the geolocation arrives and to update all the watchers
+    $scope.$apply(function() {
+      $scope.myLocation.lng = position.coords.longitude;
+      $scope.myLocation.lat = position.coords.latitude;
+ 
+      $scope.map = {
+        center: {
+          latitude: $scope.myLocation.lat,
+          longitude: $scope.myLocation.lng
+        },
+        zoom: 14,
+        pan: 1
+      };
+ 
+      $scope.marker = {
+        id: 0,
+        coords: {
+         latitude: $scope.myLocation.lat,
+         longitude: $scope.myLocation.lng
+        }
+		
+      }; 
+       
+      $scope.marker.options = {
+        draggable: false,
+		clickable: true,
+        labelContent: "lat: " + $scope.marker.coords.latitude + '<br/> ' + 'lon: ' + $scope.marker.coords.longitude,
+//		labelContent: "lat: -30" + '<br/> ' + 'lon: -51 '
+        //labelAnchor: "80 120",
+        //labelClass: "marker-labels",
+		visible: true
+      };  
+    });
+		$scope.markers.push({
+                     id: 1,
+                     coords: {
+                         latitude: -30,
+                         longitude: -51
+                     },
+                     title: "markerfoo",
+                     dizi_id: 1,
+                     markerOptions: { visible: true }
+                 });	
+		}
+  
+
+  $scope.handleError = function(error) {  
+    console.warn('ERROR(' + error.code + '): ' + error.message);
+  }
+ 
+  navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);   
 })
 
+
 .controller('HomeCtrl', function($scope) {
-  $scope.map = { center: { latitude: -30, longitude: -51 }, zoom: 8 };
+
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
