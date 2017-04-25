@@ -32,7 +32,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'uiGmapgoogle-maps'])
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
+    .state('app.search', {
     url: '/search',
     views: {
       'menuContent': {
@@ -67,13 +67,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'uiGmapgoogle-maps'])
         }
       }
     })
-  
+
     .state('home', {
       url: '/',
       templateUrl: 'home.html',
       controller: 'HomeCtrl'
     })
-	
+
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {

@@ -19,6 +19,19 @@ angular.module('starter.controllers', [])
     $scope.modal = modal;
   });
 
+  // Create the pub modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/pubModal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modalMap = modal;
+  });
+
+  // Triggered in the close modal to close it
+  $scope.closeMapModal = function() {
+    $scope.modalMap.hide();
+  };
+
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
@@ -42,36 +55,36 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistsCtrl', function($scope) {
-   $scope.playlists = [
-     { title: 'Reggae', id: 1 },
+  $scope.playlists = [
+    { title: 'Reggae', id: 1 },
     { title: 'Chill', id: 2 },
     { title: 'Dubstep', id: 3 },
     { title: 'Indie', id: 4 },
     { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 } 
-  ]; 
+    { title: 'Cowbell', id: 6 }
+  ];
 })
 
 .controller('MapaCtrl', function($scope) {
   //$scope.map = { center: { latitude: -30, longitude: -51 }, zoom: 8 };
- $scope.myLocation = {
+  $scope.myLocation = {
     lng : '',
     lat: ''
   }
- 
+
   $scope.options = {
     enableHighAccuracy: true,
     timeout: 50000,
     maximumAge: 0
   };
-   
+
   $scope.drawMap = function(position) {
- 
+
     //$scope.$apply is needed to trigger the digest cycle when the geolocation arrives and to update all the watchers
     $scope.$apply(function() {
       $scope.myLocation.lng = position.coords.longitude;
       $scope.myLocation.lat = position.coords.latitude;
- 
+
       $scope.map = {
         center: {
           latitude: $scope.myLocation.lat,
@@ -80,44 +93,49 @@ angular.module('starter.controllers', [])
         zoom: 14,
         pan: 1
       };
- 
+
       $scope.marker = {
         id: 0,
         coords: {
-         latitude: $scope.myLocation.lat,
-         longitude: $scope.myLocation.lng
+          latitude: $scope.myLocation.lat,
+          longitude: $scope.myLocation.lng
+        },
+        events: {
+          click: function(marker, eventName, model) {
+            $scope.modalMap.show();
+          }
         }
-		
-      }; 
-       
+
+      };
       $scope.marker.options = {
         draggable: false,
-		clickable: true,
+        clickable: true,
         labelContent: "lat: " + $scope.marker.coords.latitude + '<br/> ' + 'lon: ' + $scope.marker.coords.longitude,
-//		labelContent: "lat: -30" + '<br/> ' + 'lon: -51 '
+        //		labelContent: "lat: -30" + '<br/> ' + 'lon: -51 '
         //labelAnchor: "80 120",
         //labelClass: "marker-labels",
-		visible: true
-      };  
+        visible: true
+      };
     });
-		$scope.markers.push({
-                     id: 1,
-                     coords: {
-                         latitude: -30,
-                         longitude: -51
-                     },
-                     title: "markerfoo",
-                     dizi_id: 1,
-                     markerOptions: { visible: true }
-                 });	
-		}
-  
 
-  $scope.handleError = function(error) {  
+    /* TypeError: $scope.markers.push is not a function */
+    // $scope.markers.push({
+    //   id: 1,
+    //   coords: {
+    //     latitude: -30,
+    //     longitude: -51
+    //   },
+    //   title: "markerfoo",
+    //   dizi_id: 1,
+    //   markerOptions: { visible: true }
+    // });
+  }
+
+  $scope.handleError = function(error) {
     console.warn('ERROR(' + error.code + '): ' + error.message);
   }
- 
-  navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);   
+
+  navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);
 })
 
 
