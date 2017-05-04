@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout,$cordovaOauth) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -52,6 +52,14 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+
+    $scope.LoginwithFacebook = function(){
+       $cordovaOauth.facebook("644497235760858", ["email"]).then(function(result) {
+        alert("Auth Success..!!"+result);
+       }, function(error) {
+        alert("Auth Failed..!!"+error);
+       });
+   };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
