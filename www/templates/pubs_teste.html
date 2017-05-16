@@ -1,0 +1,22 @@
+<ion-view view-title="Pubs">
+    <div id="buttons">
+        <select name="show-filter" ng-model="pubsFilter">
+            <option value="{{pubs._id}}">{{pubs.name}}</option>
+        </select>
+    </div>
+    <ion-content ng-controller="mapController" >
+		<ng-map center="{{position}}" options="{{options}}" zoom="5" class="scroll">
+			<info-window id="myInfoWindow">
+				<div ng-non-bindable>
+					<h4>{{myMarker.name}}</h4>
+					<p>{{myMarker.street}}</p>
+					<p>{{myMarker.lat}}</p>
+					<p>{{myMarker.long}}</p>
+				</div>
+			</info-window>
+            <div ng-repeat="pub in pubs | filter:filter">
+			    <marker ng-repeat="c in mapMarker" title="{{c.name}}" position="{{c.pos}}" on-click="infoMarker(event, c)"></marker>
+            </div>
+        </ng-map>
+	</ion-content>
+</ion-view>
