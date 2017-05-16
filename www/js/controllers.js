@@ -1,6 +1,9 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngMap'])
+.controller('AppCtrl', AppCtrl)
+.controller('mapController', mapController)
+;
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+function AppCtrl($scope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -18,19 +21,6 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
-  // Create the pub modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/pubModal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modalMap = modal;
-  });
-
-  // Triggered in the close modal to close it
-  $scope.closeMapModal = function() {
-    $scope.modalMap.hide();
-  };
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -52,96 +42,92 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
-})
+};
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
+function mapController($scope, $filter, NgMap, $http){
+  $scope.mapMarker = [
+  {pos:[-30.2256212,-51.079219], name: "Sensor - Leste", type: "umidade"},
+  {pos:[-30.2261193,-51.0785184], name: "Sensor - Oeste", type: "umidade"}
   ];
-})
 
-.controller('MapaCtrl', function($scope) {
-  //$scope.map = { center: { latitude: -30, longitude: -51 }, zoom: 8 };
-  $scope.myLocation = {
-    lng : '',
-    lat: ''
-  }
+  $http({
+    method: 'GET',
+    url: 'http://localhost:3000/api/pub/fake'
+  }).then(
+    success => {
+      $scope.mapMarker = success.data;
+    },
+    error => {
+      console.log(error)
+    }
+  );
 
   $scope.options = {
+    // mapTypeId: "SATELLITE",//"TERRAIN",
     enableHighAccuracy: true,
-    timeout: 50000,
+    scrollwheel: true,
+    timeout: 5000,
+    mapTypeControl: false,
+    minZoom: 10,
     maximumAge: 0
   };
+  NgMap.getMap().then(function(map) {
+    $scope.map = map;
+    // console.log(map.markers);
+  });
 
-  $scope.drawMap = function(position) {
+  //centraliza o mapa no usuário
+  $scope.position = new google.maps.LatLng($scope.mapMarker[0]['pos'][0],$scope.mapMarker[0]['pos'][1]);
+  //pega a posição do usuário
+  navigator.geolocation.getCurrentPosition(function(pos) {
+  //userPosition guarda a posição do usuário no mapa
+  $scope.userPosition = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+  // $scope.position =  $scope.userPosition;
 
-    //$scope.$apply is needed to trigger the digest cycle when the geolocation arrives and to update all the watchers
-    $scope.$apply(function() {
-      $scope.myLocation.lng = position.coords.longitude;
-      $scope.myLocation.lat = position.coords.latitude;
+},
+function(error) {
+  console.log('Unable to get location: ' + error.message);
+}, $scope.options);
 
-      $scope.map = {
-        center: {
-          latitude: $scope.myLocation.lat,
-          longitude: $scope.myLocation.lng
-        },
-        zoom: 14,
-        pan: 1
-      };
-
-      $scope.marker = {
-        id: 0,
-        coords: {
-          latitude: $scope.myLocation.lat,
-          longitude: $scope.myLocation.lng
-        },
-        events: {
-          click: function(marker, eventName, model) {
-            $scope.modalMap.show();
-          }
-        }
-
-      };
-      $scope.marker.options = {
-        draggable: false,
-        clickable: true,
-        labelContent: "lat: " + $scope.marker.coords.latitude + '<br/> ' + 'lon: ' + $scope.marker.coords.longitude,
-        //		labelContent: "lat: -30" + '<br/> ' + 'lon: -51 '
-        //labelAnchor: "80 120",
-        //labelClass: "marker-labels",
-        visible: true
-      };
+  //get user's city
+  function getCity(lat,long){
+    $http({
+      method: 'GET',
+      url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long+"&sensor=true"
+    }).then(function successCallback(response) {
+      $scope.city = response.data.results[0].address_components[3].long_name;
+      $scope.$emit('userCity',$scope.city);
+    }, function errorCallback(response) {
+      console.log("serviço google fora do ar");
     });
+  };
 
-    /* TypeError: $scope.markers.push is not a function */
-    // $scope.markers.push({
-    //   id: 1,
-    //   coords: {
-    //     latitude: -30,
-    //     longitude: -51
-    //   },
-    //   title: "markerfoo",
-    //   dizi_id: 1,
-    //   markerOptions: { visible: true }
-    // });
-  }
+  function setLocalName() {
+    var lat = $scope.mapMarker.position.lat();
+    var long = $scope.mapMarker.position.lng();
+    $http({
+      method: 'GET',
+      url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long+"&sensor=true"
+    }).then(function successCallback(response) {
+      document.getElementById('local').value = response.data.results[0].formatted_address;
+      $scope.rua = response.data.results[0].formatted_address;
+      $scope.$emit('rua',{rua:$scope.rua,street:$scope.street});
+    }, function errorCallback(response) {
+      console.log("serviço google fora do ar");
+    });
+  };
 
-  $scope.handleError = function(error) {
-    console.warn('ERROR(' + error.code + '): ' + error.message);
-  }
+  $scope.infoMarker = function(event, sensors){
+    console.log("chegou infoMarker");
+    $scope.myMarker = sensors;
+    $scope.map.showInfoWindow('myInfoWindow', this);
+  };
 
-  navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);
-})
+  $scope.deleteMarker = function(){
 
+    if($scope.mapMarker){
+      $scope.mapMarker.setMap(null);
+    }
 
-.controller('HomeCtrl', function($scope) {
-
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+  };
+};

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'uiGmapgoogle-maps'])
+angular.module('starter', ['ionic', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -31,58 +31,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'uiGmapgoogle-maps'])
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
-    .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
-  .state('app.browse', {
-      url: '/browse',
+    .state('app.pubs', {
+      url: '/pubs',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/pubs.html',
+          controller: 'mapController'
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
-    .state('app.mapa', {
-      url: '/mapa',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/mapa.html',
-          controller: 'MapaCtrl'
-        }
-      }
-    })
-
-    .state('home', {
-      url: '/',
-      templateUrl: 'home.html',
-      controller: 'HomeCtrl'
-    })
-
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
-      }
-    }
-  });
+;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/mapa');
+  $urlRouterProvider.otherwise('/app/pubs');
 });
