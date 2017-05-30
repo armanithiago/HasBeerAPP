@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    var facebookConnectPlugin;
   });
 })
 
@@ -37,6 +38,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         'menuContent': {
           templateUrl: 'templates/pubs.html',
           controller: 'mapController'
+        }
+      }
+    })
+    .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'AppCtrl'
         }
       }
     })

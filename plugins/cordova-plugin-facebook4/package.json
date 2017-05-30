@@ -1,0 +1,105 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-facebook4",
+        "scope": null,
+        "escapedName": "cordova-plugin-facebook4",
+        "name": "cordova-plugin-facebook4",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\thiagoarmani\\Documents\\HasBeerAPP\\node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-facebook4@latest",
+  "_id": "cordova-plugin-facebook4@1.9.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-facebook4",
+  "_nodeVersion": "7.10.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-facebook4-1.9.0.tgz_1494947010513_0.5972316123079509"
+  },
+  "_npmUser": {
+    "name": "jeduan",
+    "email": "jeduan@gmail.com"
+  },
+  "_npmVersion": "4.6.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-facebook4",
+    "scope": null,
+    "escapedName": "cordova-plugin-facebook4",
+    "name": "cordova-plugin-facebook4",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-facebook4/-/cordova-plugin-facebook4-1.9.0.tgz",
+  "_shasum": "84e54c239f6d80a844415d30cefe7a28c7090541",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-facebook4",
+  "_where": "C:\\Users\\thiagoarmani\\Documents\\HasBeerAPP\\node_modules",
+  "bugs": {
+    "url": "https://github.com/jeduan/cordova-plugin-facebook4/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-facebook4",
+    "platforms": [
+      "android",
+      "ios",
+      "browser"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova Facebook SDK 4 Plugin",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "84e54c239f6d80a844415d30cefe7a28c7090541",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-facebook4/-/cordova-plugin-facebook4-1.9.0.tgz"
+  },
+  "gitHead": "d67a0fcb1cb8fa9c76b49aa0f0379c950a441889",
+  "homepage": "https://github.com/jeduan/cordova-plugin-facebook4#readme",
+  "keywords": [
+    "cordova",
+    "facebook",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova-browser",
+    "facebook-sdk",
+    "social",
+    "sharing"
+  ],
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "arnesson",
+      "email": "robert@robertarnesson.com"
+    },
+    {
+      "name": "jeduan",
+      "email": "jeduan@gmail.com"
+    },
+    {
+      "name": "nightstomp",
+      "email": "info@nightstomp.com"
+    }
+  ],
+  "name": "cordova-plugin-facebook4",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeduan/cordova-plugin-facebook4.git"
+  },
+  "scripts": {},
+  "version": "1.9.0"
+}

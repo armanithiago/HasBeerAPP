@@ -35,7 +35,35 @@ function AppCtrl($scope, $ionicModal, $timeout) {
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
+    facebookConnectPlugin.login(["email"],
+      function (response){
+        console.log("THIS IS AN WIN FROM FB: " + JSON.stringify(response));
+        if(response.status == "connected"){
+          getPublishPerm();
+        }
+      },
+      function (error) {
+        console.log("THIS IS AN ERROR FROM FB: " + JSON.stringify(error));
+      }
+    );
 
+    FB.login(function(response) {
+      if (response.status === 'connected') {
+
+      } else {
+        // The person is not logged into this app or we are unable to tell.
+      }
+    });
+
+    FB.logout(function(response) {
+   // Person is now logged out
+    });
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
     $timeout(function() {

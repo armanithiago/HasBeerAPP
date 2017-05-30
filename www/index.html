@@ -25,6 +25,7 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/facebookConnectPlugin/facebookConnectPlugin.js"></script>
     <script src="lib/ngmap/build/scripts/ng-map.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -35,9 +36,35 @@
     <script src="js/controllers.js"></script>
 
     <script src="http://maps.google.com/maps/api/js?key=AIzaSyBoEKZH6MVc_6U-Vq_C3sP3AjV92yx6y6E&libraries=places"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '644497235760858',
+          xfbml      : true,
+          version    : 'v2.9'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
   </head>
 
   <body ng-app="starter">
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.9&appId=644497235760858";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
     <ion-nav-view></ion-nav-view>
+    <div id="fb-root"></div>
   </body>
 </html>
